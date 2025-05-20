@@ -17,7 +17,14 @@ export async function POST(request: Request) {
     return new Response(payload.challenge, { status: 200 });
   }
 
-  await verifyRequest({ requestType, request, rawBody });
+  const verificationResponse = await verifyRequest({
+    requestType,
+    request,
+    rawBody,
+  });
+  if (verificationResponse) {
+    return verificationResponse;
+  }
 
   try {
     const botUserId = await getBotId();
